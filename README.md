@@ -1,4 +1,4 @@
-# 🛡️ Enterprise Cloud Security Lab – Attack, Detection & Defense (AWS + SOC Simulation)
+# Enterprise Cloud Security Lab – Attack, Detection & Defense (AWS + SOC Simulation)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Cloud-AWS-orange?style=for-the-badge&logo=amazonaws">
@@ -10,7 +10,7 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 This project simulates a **real-world enterprise cloud security environment**, demonstrating how a SOC analyst builds infrastructure, detects threats, and responds to attacks.
 
@@ -20,7 +20,7 @@ It covers the full lifecycle:
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 * Build cloud + virtualized infrastructure
 * Simulate real-world attack (**SQL Injection**)
@@ -30,10 +30,10 @@ It covers the full lifecycle:
 
 ---
 
-## 🧠 Architecture
+## Architecture
 
 ```
-🌐 Attacker (Internet)
+  Attacker (Internet)
         │
         ▼
 ┌────────────────────────────┐
@@ -59,12 +59,12 @@ It covers the full lifecycle:
               ▼
      SNS Notifications
 
-🛡️ GuardDuty → Threat Detection Engine
+ GuardDuty → Threat Detection Engine
 ```
 
 ---
 
-## ⚙️ Technologies Used
+## Technologies Used
 
 | Category          | Tools                      |
 | ----------------- | -------------------------- |
@@ -79,7 +79,7 @@ It covers the full lifecycle:
 
 ---
 
-## 🔧 Environment Setup
+## Environment Setup
 
 ### Local Infrastructure (VMware)
 
@@ -102,7 +102,7 @@ It covers the full lifecycle:
 
 ---
 
-## 💣 Attack Simulation
+## Attack Simulation
 
 A vulnerable application (**DVWA**) was deployed and tested using SQL Injection:
 
@@ -118,7 +118,7 @@ Password: 1' OR '1'='1
 
 ---
 
-## 🚨 Detection & Monitoring
+## Detection & Monitoring
 
 ### CloudWatch
 
@@ -134,14 +134,14 @@ Password: 1' OR '1'='1
 
 ---
 
-## 🛡️ Defensive Controls
+## Defensive Controls
 
 ### AWS WAF
 
 * Configured SQL Injection protection
 * Attached to Application Load Balancer
 
-### ✅ Validation:
+### Validation:
 
 * Malicious request blocked
 * Returned:
@@ -152,7 +152,7 @@ Password: 1' OR '1'='1
 
 ---
 
-## 🔍 Threat Detection
+## Threat Detection
 
 ### AWS GuardDuty
 
@@ -169,7 +169,115 @@ Password: 1' OR '1'='1
 
 ---
 
-## 🔄 SOC Workflow
+## Detection Logic Breakdown (SOC Perspective)
+
+### 1. SQL Injection Detection (WAF Layer)
+
+**Attack Input:**
+
+```
+1' OR '1'='1
+```
+
+**Detection Logic:**
+
+* AWS WAF uses managed rule sets
+* Matches SQL injection patterns and payload signatures
+
+**Trigger:**
+
+* Request matches SQL injection signature → blocked immediately
+
+**Result:**
+
+```
+403 Forbidden
+```
+
+**SOC Insight:**
+
+* Signature-based detection
+* Fast and effective for known attack patterns
+
+---
+
+### 2. CloudWatch Monitoring (Behavioral Detection)
+
+**Monitored Data:**
+
+* EC2 logs
+* Application activity
+* System metrics
+
+**Detection Logic:**
+
+* Threshold-based alerting:
+
+  * High traffic spikes
+  * Repeated failed requests
+  * Resource anomalies
+
+**SOC Insight:**
+
+* Detects abnormal behavior
+* Complements WAF detection
+
+---
+
+### 3. GuardDuty Threat Detection (Advanced Layer)
+
+**Simulated Activity:**
+
+* Nmap port scan
+
+**Detection:**
+
+```
+Recon:EC2/Portscan
+```
+
+**Detection Logic:**
+
+* Machine learning + threat intelligence
+* Identifies:
+
+  * Port scanning
+  * Suspicious outbound connections
+  * Recon behavior
+
+**SOC Insight:**
+
+* Behavioral + ML-based detection
+* Detects unknown threats
+
+---
+
+### 4. Detection Correlation
+
+| Layer      | Type       | Example           |
+| ---------- | ---------- | ----------------- |
+| WAF        | Signature  | SQL Injection     |
+| CloudWatch | Behavioral | Traffic anomalies |
+| GuardDuty  | ML-based   | Port scanning     |
+
+**SOC Value:**
+
+* Multi-layer detection
+* Defense-in-depth strategy
+
+---
+
+### 5. Analyst Workflow
+
+1. Alert triggered
+2. Validate logs
+3. Identify attack
+4. Confirm malicious activity
+5. Respond (block + monitor)
+
+---
+
+## SOC Workflow
 
 ```
 Attack → Detection → Alert → Investigation → Response → Mitigation
@@ -177,7 +285,7 @@ Attack → Detection → Alert → Investigation → Response → Mitigation
 
 ---
 
-## 🧩 MITRE ATT&CK Mapping
+## MITRE ATT&CK Mapping
 
 | Tactic            | Technique                 | ID    |
 | ----------------- | ------------------------- | ----- |
@@ -188,9 +296,8 @@ Attack → Detection → Alert → Investigation → Response → Mitigation
 
 ---
 
-## 📸 Key Evidence
+## Key Evidence
 
-```html
 <img src="./screenshots/01-ubuntu-vm-running.png" width="900"/>
 <img src="./screenshots/02-linux-system-access.png" width="900"/>
 <img src="./screenshots/03-vm-connectivity-test.png" width="900"/>
@@ -213,47 +320,13 @@ Attack → Detection → Alert → Investigation → Response → Mitigation
 <img src="./screenshots/16-waf-security-rules.png" width="900"/>
 <img src="./screenshots/17-guardduty-threat-detection.png" width="900"/>
 <img src="./screenshots/18-guardduty-finding-details.png" width="900"/>
-```
 
 ---
 
-## 📁 Project Structure
-
-```
-enterprise-cloud-security-lab/
-│
-├── screenshots/
-├── architecture/
-│   └── architecture-diagram.png
-├── scripts/
-│   └── dvwa-install.sh
-└── README.md
-```
-
----
-
-## 🚀 Future Improvements
-
-* Integrate SIEM (Splunk / Microsoft Sentinel)
-* Add automated response (AWS Lambda)
-* Implement IDS/IPS (Suricata)
-* Add brute-force attack simulation
-* Advanced threat hunting
-
----
-
-## 👨‍💻 Author
+## Author
 
 **Tejinder Singh**
+
 SOC Analyst | Cloud Security | Threat Detection
-
----
-
-## 🔥 Why This Project Stands Out
-
-* End-to-end SOC simulation
-* Real attack + real defense
-* Cloud + security + monitoring combined
-* Demonstrates **Tier 1 → Tier 2 SOC capability**
 
 ---
