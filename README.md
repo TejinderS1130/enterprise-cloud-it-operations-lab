@@ -298,28 +298,36 @@ Attack → Detection → Alert → Investigation → Response → Mitigation
 
 ## Key Evidence
 
-<img src="./screenshots/01-ubuntu-vm-running.png" width="900"/>
-<img src="./screenshots/02-linux-system-access.png" width="900"/>
-<img src="./screenshots/03-vm-connectivity-test.png" width="900"/>
+<img src="./screenshots/01-ubuntu-vm-running.png" width="700"/>
+<img src="./screenshots/02-linux-system-access.png" width="700"/>
+<img src="./screenshots/03-vm-connectivity-test.png" width="700"/>
 
-<img src="./screenshots/04-ec2-instance-running.png" width="900"/>
-<img src="./screenshots/05-ec2-ssh-access.png" width="900"/>
-<img src="./screenshots/06-ec2-connectivity-test.png" width="900"/>
+<img src="./screenshots/04-ec2-instance-running.png" width="700"/>
+<img src="./screenshots/05-ec2-ssh-access.png" width="700"/>
+<img src="./screenshots/06-ec2-connectivity-test.png" width="700"/>
 
-<img src="./screenshots/07-aws-vpc-overview.png" width="900"/>
-<img src="./screenshots/08-subnet-configuration.png" width="900"/>
-<img src="./screenshots/09-route-table-configuration.png" width="900"/>
-<img src="./screenshots/10-network-security-controls.png" width="900"/>
+<img src="./screenshots/07-aws-vpc-overview.png" width="700"/>
+<img src="./screenshots/08-subnet-configuration.png" width="700"/>
+<img src="./screenshots/09-route-table-configuration.png" width="700"/>
+<img src="./screenshots/10-network-security-controls.png" width="700"/>
 
-<img src="./screenshots/11-dvwa-web-application.png" width="900"/>
-<img src="./screenshots/12-sql-injection-attack.png" width="900"/>
-<img src="./screenshots/13-cloudwatch-monitoring.png" width="900"/>
-<img src="./screenshots/14-cloud-alerts-triggered.png" width="900"/>
+<img src="./screenshots/11-dvwa-web-application.png" width="700"/>
+<img src="./screenshots/12-sql-injection-attack.png" width="700"/>
+<img src="./screenshots/13-cloudwatch-monitoring.png" width="700"/>
+<img src="./screenshots/14-cloud-alerts-triggered.png" width="700"/>
 
-<img src="./screenshots/15-waf-sql-injection-block.png" width="900"/>
-<img src="./screenshots/16-waf-security-rules.png" width="900"/>
-<img src="./screenshots/17-guardduty-threat-detection.png" width="900"/>
-<img src="./screenshots/18-guardduty-finding-details.png" width="900"/>
+<img src="./screenshots/15-waf-sql-injection-block.png" width="700"/>
+<img src="./screenshots/16-waf-security-rules.png" width="700"/>
+<img src="./screenshots/17-guardduty-threat-detection.png" width="700"/>
+<img src="./screenshots/18-guardduty-finding-details.png" width="700"/>
+
+---
+
+## Detailed SOC Case Study
+
+This project includes a full SOC-style incident investigation report based on the simulated SQL Injection attack.
+
+👉 [View Full Incident Report](./reports/cloud-incident-report.md)
 
 ---
 
