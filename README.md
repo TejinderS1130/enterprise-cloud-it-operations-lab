@@ -1,4 +1,4 @@
-# Enterprise Cloud Security Lab – Attack, Detection & Defense (AWS + SOC Simulation)
+#  Enterprise Cloud IT & Security Operations Lab (AWS + SOC Simulation)
 
 <p align="center">
   <img src="https://img.shields.io/badge/Cloud-AWS-orange?style=for-the-badge&logo=amazonaws">
