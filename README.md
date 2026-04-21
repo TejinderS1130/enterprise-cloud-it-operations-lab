@@ -12,11 +12,13 @@
 
 ## Overview
 
-This project simulates a **real-world enterprise cloud security environment**, demonstrating how a SOC analyst builds infrastructure, detects threats, and responds to attacks.
+This project simulates a **real-world enterprise cloud IT and security environment**, demonstrating how a SOC analyst designs infrastructure, detects threats, investigates alerts, and responds to attacks.
 
-It covers the full lifecycle:
+It covers the complete lifecycle:
 
 > **Infrastructure → Attack Simulation → Detection → Investigation → Defense**
+
+This project shows how cloud infrastructure, monitoring, and security controls work together to detect and respond to real-world threats, reflecting real SOC analyst workflows in enterprise environments.
 
 ---
 
@@ -33,9 +35,9 @@ It covers the full lifecycle:
 ## Architecture
 
 ```
-  Attacker (Internet)
-        │
-        ▼
+     Attacker (Internet)
+              │
+              ▼
 ┌────────────────────────────┐
 │ Application Load Balancer  │
 │ (Protected by AWS WAF)     │
@@ -274,6 +276,57 @@ Recon:EC2/Portscan
 3. Identify attack
 4. Confirm malicious activity
 5. Respond (block + monitor)
+
+---
+
+##  False Positives & Improvements
+
+### Potential False Positives
+
+- Legitimate users triggering WAF rules due to unusual input patterns  
+- High traffic spikes incorrectly flagged by CloudWatch thresholds  
+- Internal vulnerability scans triggering GuardDuty alerts  
+
+---
+
+### Improvements
+
+- Tune WAF rules to reduce false positives while maintaining protection  
+- Adjust CloudWatch alert thresholds based on baseline behavior  
+- Implement IP allow-listing for trusted sources  
+- Enhance logging and correlation across multiple services  
+
+---
+
+### SOC Insight
+
+Detection is not only about identifying threats — it requires continuous tuning to balance **accuracy vs noise reduction**.
+
+---
+
+
+
+##  Incident Timeline
+
+| Time        | Event |
+|------------|------|
+| T0         | SQL Injection attempt initiated |
+| T1         | WAF detects and blocks request |
+| T2         | CloudWatch logs activity spike |
+| T3         | SNS alert triggered |
+| T4         | GuardDuty identifies suspicious behavior |
+| T5         | Analyst investigates logs and validates attack |
+| T6         | Response applied (WAF block confirmed) |
+
+---
+
+### SOC Insight
+
+A structured timeline helps analysts quickly understand:
+
+- Attack progression  
+- Detection points  
+- Response effectiveness  
 
 ---
 
