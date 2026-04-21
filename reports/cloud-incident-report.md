@@ -1,8 +1,8 @@
-# SOC Incident Report: Web Application Attack (SQL Injection)
+#  SOC Incident Report: Web Application Attack (SQL Injection)
 
 ---
 
-## Incident Overview
+##  Incident Overview
 
 | Field | Value |
 |------|------|
@@ -14,153 +14,147 @@
 
 ---
 
-## Attack Description
+##  Executive Summary
 
-This incident involves a **web application attack (SQL Injection)** targeting a vulnerable application hosted on an AWS EC2 instance.
+A **SQL Injection attack** was attempted against a public-facing web application hosted in AWS.
 
-The attacker attempted to manipulate backend database queries using crafted input to bypass authentication mechanisms.
+The attack was successfully **detected and blocked by AWS WAF**, preventing any interaction with the backend database.
 
-### Attack Objective
-
-- Bypass authentication controls  
-- Manipulate backend database queries  
-- Gain unauthorized access to the application  
+Additional telemetry from GuardDuty indicated reconnaissance activity, suggesting broader attacker intent.
 
 ---
 
-## Attack Flow
+##  Attack Description
+
+The attacker attempted to manipulate backend database queries using crafted input to bypass authentication mechanisms.
+
+###  Attack Objective
+
+- Bypass authentication controls  
+- Manipulate backend database queries  
+- Gain unauthorized access  
+
+---
+
+##  Attack Flow
 
 | Step | Activity |
 |------|--------|
 | 1 | Attacker accessed public-facing web application |
 | 2 | Malicious SQL payload submitted via login form |
-| 3 | Input matched known SQL injection pattern |
+| 3 | Payload matched SQL injection signature |
 | 4 | AWS WAF inspected and blocked the request |
-| 5 | Attack prevented before reaching backend database |
+| 5 | Attack prevented before reaching backend |
 
 ---
 
-## Detection Summary
+##  Detection Summary
 
 | Layer | Tool | Detection Type |
 |------|------|---------------|
-| Application Layer | AWS WAF | Signature-based (SQL Injection) |
-| Monitoring Layer | CloudWatch | Behavioral (traffic/activity anomalies) |
-| Threat Detection | GuardDuty | ML-based (reconnaissance activity) |
+| Application Layer | AWS WAF | Signature-based |
+| Monitoring Layer | CloudWatch | Behavioral |
+| Threat Detection | GuardDuty | ML-based |
 
 ---
 
-## SOC Investigation Methodology
+##  SOC Investigation Methodology
 
-### Step 1 — Alert Identification
+###  Alert Identification
 - Suspicious request detected at WAF layer  
-- HTTP response returned: 403 Forbidden  
+- HTTP response: **403 Forbidden**
 
 ---
 
-### Step 2 — Log Analysis
+###  Log Analysis
 - Reviewed WAF logs and request patterns  
-- Identified SQL injection payload: 1' OR '1'='1  
+- Identified payload:
+```
+1' OR '1'='1
+```
 
 ---
 
-### Step 3 — Activity Validation
-- Confirmed request matched SQL injection signature  
-- Verified request was blocked before reaching EC2 instance  
+###  Activity Validation
+- Confirmed SQL injection signature match  
+- Verified request blocked before reaching EC2  
 
 ---
 
-### Step 4 — Threat Detection Correlation
+###  Threat Correlation
 - Reviewed GuardDuty findings  
-- Identified reconnaissance activity: Recon:EC2/Portscan  
+- Detected:
+```
+Recon:EC2/Portscan
+```
 
 ---
 
-### Step 5 — Environment Analysis
-- Verified no compromise of EC2 instance  
-- No unauthorized database access detected  
-- No persistence mechanisms observed  
+###  Environment Verification
+- No EC2 compromise  
+- No database access  
+- No persistence observed  
 
 ---
 
-## Response Actions
+##  Response Actions
 
-### Immediate Actions
-- AWS WAF blocked malicious request  
-- No further action required at application level  
+### Immediate Response
+- Malicious request blocked by AWS WAF  
+- No further escalation required  
 
 ---
 
-### Defensive Measures
+### Defensive Controls Implemented
 - Enabled AWS WAF managed rule sets  
-- Configured SQL injection protection rules  
+- Configured SQL injection protection  
 - Attached WAF to Application Load Balancer  
 
 ---
 
 ### Monitoring Enhancements
 - Enabled CloudWatch logging  
-- Configured SNS alerts for suspicious activity  
+- Configured SNS alerts  
 
 ---
 
-## Key Indicators of Compromise (IOCs)
+##  Indicators of Compromise (IOCs)
 
-| Indicator Type | Value |
-|---------------|------|
+| Type | Value |
+|-----|------|
 | Attack Type | SQL Injection |
 | Payload | 1' OR '1'='1 |
-| Response | HTTP 403 Forbidden |
+| Response | HTTP 403 |
 | Detection Source | AWS WAF |
-| Additional Finding | GuardDuty Port Scan |
+| Additional Indicator | GuardDuty Port Scan |
 
 ---
 
-## False Positives Consideration
+##  False Positive Analysis
 
 ### Potential False Positives
-- Security testing or lab-based simulation  
-- Legitimate malformed input from users  
+- Security testing activity  
+- Malformed but legitimate user input  
 
 ---
 
 ### Validation Approach
-- Correlated request patterns with known attack signatures  
-- Confirmed malicious intent based on payload structure  
-- Verified WAF rule trigger accuracy  
+- Verified known SQL injection pattern  
+- Correlated across multiple detection layers  
+- Confirmed malicious intent  
 
 ---
 
-## Detection Engineering Insights
+##  Detection Engineering Insights
 
-- WAF provides fast, signature-based protection against known attacks  
-- CloudWatch enables behavioral monitoring of application activity  
-- GuardDuty enhances detection using machine learning and threat intelligence  
-- Multi-layer detection improves visibility and response accuracy  
-
----
-
-## Lessons Learned
-
-- Public-facing applications are high-risk targets  
-- Input validation alone is insufficient without WAF protection  
-- Defense-in-depth is critical in cloud environments  
-- Early detection prevents backend compromise  
+- WAF provides fast, signature-based protection  
+- CloudWatch enables behavioral anomaly detection  
+- GuardDuty adds ML-based threat detection  
+- Multi-layer detection improves accuracy and visibility  
 
 ---
 
-## MITRE ATT&CK Mapping
-
-| Tactic | Technique | ID |
-|-------|----------|----|
-| Initial Access | Exploit Public-Facing Application | T1190 |
-| Credential Access | SQL Injection (Simulated) | T1003 |
-| Execution | User Input Exploitation | T1204 |
-| Reconnaissance | Port Scanning | T1046 |
-
----
-
-## Impact Assessment
+##  Impact Assessment
 
 | Metric | Value |
 |-------|------|
@@ -173,19 +167,39 @@ The attacker attempted to manipulate backend database queries using crafted inpu
 
 ---
 
-## SOC Analyst Summary
+##  MITRE ATT&CK Mapping
 
-This incident demonstrates a **successful detection and mitigation of a web application attack** using AWS native security services.
+| Tactic | Technique | ID |
+|-------|----------|----|
+| Initial Access | Exploit Public-Facing Application | T1190 |
+| Credential Access | SQL Injection (Simulated) | T1003 |
+| Execution | User Input Exploitation | T1204 |
+| Reconnaissance | Port Scanning | T1046 |
 
-The SQL injection attempt was identified and blocked by AWS WAF before reaching the backend application, preventing unauthorized access.
+---
 
-GuardDuty provided additional visibility by detecting reconnaissance activity, reinforcing the presence of a potential threat actor.
+##  Lessons Learned
 
-### Key Takeaways:
+- Public-facing applications are high-risk targets  
+- WAF is critical for application-layer protection  
+- Defense-in-depth enhances detection and response  
+- Early detection prevents backend compromise  
 
-- WAF is critical for protecting public-facing applications  
-- Multi-layer detection (WAF + CloudWatch + GuardDuty) enhances security posture  
-- Real-time blocking prevents application compromise  
-- Cloud-native security tools enable effective SOC operations  
+---
+
+##  SOC Analyst Conclusion
+
+This incident demonstrates **successful detection and mitigation of a web application attack** using AWS-native security services.
+
+The SQL injection attempt was **blocked at the WAF layer**, preventing any impact to backend systems.
+
+GuardDuty provided additional context by identifying reconnaissance activity, strengthening the overall threat assessment.
+
+###  Key Takeaways
+
+- WAF is essential for protecting public-facing applications  
+- Multi-layer detection (WAF + CloudWatch + GuardDuty) is highly effective  
+- Real-time blocking prevents compromise  
+- Cloud-native tools enable efficient SOC operations  
 
 ---
